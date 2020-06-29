@@ -6,3 +6,6 @@ out
 *.iml
 *.ipr
 
+*.csv
+
+target
