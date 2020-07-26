@@ -1,8 +1,11 @@
 package project.grouper
 
-import project.grouper.cli.GroupCli
-import project.grouper.usecase.HighestScoredGroupLot
+import project.grouper.driver.CsvDriver
+import project.grouper.gateway.LotGateway
+import project.grouper.gateway.RequirementGateway
+import project.grouper.usecase.LotUsecase
 
 fun main(args: Array<String>) {
-    GroupCli(HighestScoredGroupLot()).generateGroupLot(args[0].toInt(), args[1])
+    val csvDriver = CsvDriver()
+    LotUsecase(RequirementGateway(csvDriver), LotGateway(csvDriver)).generateRandomLot()
 }
