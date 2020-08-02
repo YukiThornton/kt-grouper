@@ -1,6 +1,6 @@
 package project.grouper.gateway
 
-import project.grouper.domain.Lot
+import project.grouper.domain.*
 import project.grouper.driver.CsvDriver
 import project.grouper.port.LotPort
 import java.text.SimpleDateFormat
@@ -8,9 +8,28 @@ import java.util.*
 
 class LotGateway(private val csvDriver: CsvDriver): LotPort {
     override fun saveLot(lot: Lot) {
-        val csvContent = lot.list.map { group ->
-            group.members.list.map { member -> member.name }
-        }
+        val csvContent = lot.toCsvRows()
+        saveToNewCsvFile(csvContent)
+    }
+
+    override fun saveScoredLot(scoredLot: ScoredLot) {
+        val csvContent = scoredLot.toCsvRows()
+        saveToNewCsvFile(csvContent)
+    }
+
+    private fun Lot.toCsvRows(): List<List<String>> {
+        return map { it.toCsvRow()}
+    }
+
+    private fun ScoredLot.toCsvRows(): List<List<String>> {
+        return map { it.group.toCsvRow() }
+    }
+
+    private fun Group.toCsvRow(): List<String> {
+        return members.map(Member::name)
+    }
+
+    private fun saveToNewCsvFile(csvContent: List<List<String>>) {
         val filePath = createOutputPath(generateUniqueLotFileName())
         csvDriver.writeCells(filePath, csvContent)
     }

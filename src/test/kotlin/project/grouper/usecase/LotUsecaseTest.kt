@@ -1,12 +1,15 @@
 package project.grouper.usecase
 
 import io.mockk.*
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import project.grouper.domain.*
 import project.grouper.gateway.LotGateway
 import project.grouper.gateway.RequirementGateway
+import project.grouper.port.HistoryPort
 
 class LotUsecaseTest {
     @BeforeEach
@@ -15,13 +18,21 @@ class LotUsecaseTest {
     @AfterEach
     fun tearDown() = unmockkAll()
 
-    private val requirementPort = mockk<RequirementGateway>()
-    private val lotPort = mockk<LotGateway>()
+    @InjectMockKs
+    private lateinit var target: LotUsecase
 
-    private val target = LotUsecase(requirementPort, lotPort)
+    @MockK
+    private lateinit var requirementPort: RequirementGateway
+
+    @MockK
+    private lateinit var historyPort: HistoryPort
+
+    @MockK
+    private lateinit var lotPort: LotGateway
+
 
     @Test
-    fun `generateRandomLot returns a highest scored group lot`() {
+    fun `generateRandomLot returns a randomly generated group lot`() {
         val requirement = mockk<Requirement>()
         val groupSize = mockk<MaxGroupSize>()
         val lot = mockk<Lot>()
@@ -38,5 +49,34 @@ class LotUsecaseTest {
         verify { requirement.maxGroupSize() }
         verify { LotGenerator.generateRandomLot(groupSize, requirement.members) }
         verify { lotPort.saveLot(lot) }
+    }
+
+    @Test
+    fun `generateLotWithHighestScore generates a random group lot with highest score`() {
+        val requirement = mockk<Requirement>()
+        val groupSize = mockk<MaxGroupSize>()
+        val history = mockk<History>()
+        val lots = mockk<Lots>()
+        val scoredLots = mockk<ScoredLots>()
+        val scoredLot = mockk<ScoredLot>()
+
+        mockkObject(LotGenerator.Companion)
+        every { requirementPort.getRequirement() } returns requirement
+        every { historyPort.getHistory() } returns history
+        every { requirement.maxGroupSize() } returns groupSize
+        every { LotGenerator.generateRandomLots(groupSize, requirement.members, 100) } returns lots
+        every { history.score(lots) } returns scoredLots
+        every { scoredLots.highest() } returns scoredLot
+        every { lotPort.saveScoredLot(scoredLot) } just runs
+
+        target.generateLotWithHighestScore()
+
+        verify { requirementPort.getRequirement() }
+        verify { historyPort.getHistory() }
+        verify { requirement.maxGroupSize() }
+        verify { LotGenerator.generateRandomLots(groupSize, requirement.members, 100) }
+        verify { history.score(lots) }
+        verify { scoredLots.highest() }
+        verify { lotPort.saveScoredLot(scoredLot) }
     }
 }

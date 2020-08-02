@@ -9,10 +9,16 @@ import project.grouper.port.RequirementPort
 
 class RequirementGateway(private val csvDriver: CsvDriver) : RequirementPort {
     override fun getRequirement(): Requirement {
-        return Requirement(GroupCount(5), createMembers(csvDriver.readCells("input/requirement.csv")))
+        return Requirement(loadGroupCount(), loadMembers())
     }
 
-    private fun createMembers(csvLines: List<List<String>>): Members {
+    private fun loadGroupCount(): GroupCount {
+        val csvLines = csvDriver.readCells("input/group-count.csv")
+        return csvLines.first().first().toInt().let(::GroupCount)
+    }
+
+    private fun loadMembers(): Members {
+        val csvLines = csvDriver.readCells("input/members.csv")
         val members = csvLines.asSequence()
             .map { it.first() }
             .filter { it.isNotEmpty() }

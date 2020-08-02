@@ -19,4 +19,9 @@ class CsvDriver {
 
     fun toCsvLines(content: List<List<String>>): String =
         content.joinToString("\n") { it.joinToString(",") }
+
+    fun findCsvFileNames(rootPath: String): List<String> {
+        return File(rootPath).list().filter { it.endsWith(".csv") }
+    }
+
 }
