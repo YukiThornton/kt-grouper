@@ -4,9 +4,10 @@ import project.grouper.driver.CsvDriver
 import project.grouper.gateway.HistoryGateway
 import project.grouper.gateway.LotGateway
 import project.grouper.gateway.RequirementGateway
-import project.grouper.usecase.LotUsecase
+import project.grouper.usecase.ScoredLotUsecase
 
 fun main(args: Array<String>) {
     val csvDriver = CsvDriver()
-    LotUsecase(RequirementGateway(csvDriver), HistoryGateway(csvDriver), LotGateway(csvDriver)).generateLotWithHighestScore()
+    // RandomLotUsecase(RequirementGateway(csvDriver), LotGateway(csvDriver)).generate()
+    ScoredLotUsecase(RequirementGateway(csvDriver), HistoryGateway(csvDriver), LotGateway(csvDriver)).generate()
 }

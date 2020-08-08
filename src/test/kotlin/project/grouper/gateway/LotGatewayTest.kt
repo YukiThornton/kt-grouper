@@ -3,20 +3,12 @@ package project.grouper.gateway
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.BeforeEach
+import project.grouper.Mocked
 import project.grouper.domain.*
 import project.grouper.driver.CsvDriver
 
-class LotGatewayTest {
-
-    @BeforeEach
-    fun setUp() = MockKAnnotations.init(this)
-
-    @AfterEach
-    fun tearDown() = unmockkAll()
+class LotGatewayTest: Mocked() {
 
     @InjectMockKs
     private lateinit var target: LotGateway

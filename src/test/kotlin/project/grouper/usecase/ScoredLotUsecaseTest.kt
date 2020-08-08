@@ -3,53 +3,25 @@ package project.grouper.usecase
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import project.grouper.Mocked
 import project.grouper.domain.*
-import project.grouper.gateway.LotGateway
-import project.grouper.gateway.RequirementGateway
 import project.grouper.port.HistoryPort
+import project.grouper.port.LotPort
+import project.grouper.port.RequirementPort
 
-class LotUsecaseTest {
-    @BeforeEach
-    fun setUp() = MockKAnnotations.init(this)
-
-    @AfterEach
-    fun tearDown() = unmockkAll()
-
+class ScoredLotUsecaseTest: Mocked() {
     @InjectMockKs
-    private lateinit var target: LotUsecase
+    private lateinit var target: ScoredLotUsecase
 
     @MockK
-    private lateinit var requirementPort: RequirementGateway
+    private lateinit var requirementPort: RequirementPort
 
     @MockK
     private lateinit var historyPort: HistoryPort
 
     @MockK
-    private lateinit var lotPort: LotGateway
-
-
-    @Test
-    fun `generateRandomLot returns a randomly generated group lot`() {
-        val requirement = mockk<Requirement>()
-        val groupSize = mockk<MaxGroupSize>()
-        val lot = mockk<Lot>()
-
-        mockkObject(LotGenerator.Companion)
-        every { requirementPort.getRequirement() } returns requirement
-        every { requirement.maxGroupSize() } returns groupSize
-        every { LotGenerator.generateRandomLot(groupSize, requirement.members) } returns lot
-        every { lotPort.saveLot(lot) } just runs
-
-        target.generateRandomLot()
-
-        verify { requirementPort.getRequirement() }
-        verify { requirement.maxGroupSize() }
-        verify { LotGenerator.generateRandomLot(groupSize, requirement.members) }
-        verify { lotPort.saveLot(lot) }
-    }
+    private lateinit var lotPort: LotPort
 
     @Test
     fun `generateLotWithHighestScore generates a random group lot with highest score`() {
@@ -69,7 +41,7 @@ class LotUsecaseTest {
         every { scoredLots.highest() } returns scoredLot
         every { lotPort.saveScoredLot(scoredLot) } just runs
 
-        target.generateLotWithHighestScore()
+        target.generate()
 
         verify { requirementPort.getRequirement() }
         verify { historyPort.getHistory() }

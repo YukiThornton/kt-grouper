@@ -4,7 +4,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.amshove.kluent.shouldEqual
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class GroupTest {

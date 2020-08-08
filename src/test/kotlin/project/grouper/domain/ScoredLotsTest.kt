@@ -3,8 +3,6 @@ package project.grouper.domain
 import org.amshove.kluent.shouldEqual
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
-
 class ScoredLotsTest {
 
     @Test

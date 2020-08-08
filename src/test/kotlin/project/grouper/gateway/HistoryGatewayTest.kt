@@ -1,29 +1,19 @@
 package project.grouper.gateway
 
-import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import io.mockk.unmockkAll
 import io.mockk.verify
 import org.amshove.kluent.shouldEqual
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.BeforeEach
+import project.grouper.Mocked
 import project.grouper.domain.Group
 import project.grouper.domain.History
 import project.grouper.domain.Member
 import project.grouper.domain.Members
 import project.grouper.driver.CsvDriver
 
-class HistoryGatewayTest {
-    @BeforeEach
-    fun setUp() = MockKAnnotations.init(this)
-
-    @AfterEach
-    fun tearDown() = unmockkAll()
-
+class HistoryGatewayTest: Mocked() {
     @InjectMockKs
     private lateinit var target: HistoryGateway
 

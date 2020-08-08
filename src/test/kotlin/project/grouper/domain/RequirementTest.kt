@@ -4,8 +4,6 @@ import io.mockk.mockk
 import org.amshove.kluent.shouldEqual
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
-
 class RequirementTest {
 
     @Test
