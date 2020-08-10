@@ -26,13 +26,18 @@ class RequestGatewayTest: Mocked() {
         val expected = Request(listOf(
             RequestedPair(Member("a"), Member("b"), RequestType.SAME_GROUP),
             RequestedPair(Member("a"), Member("c"), RequestType.SAME_GROUP),
-            RequestedPair(Member("c"), Member("d"), RequestType.SAME_GROUP)
+            RequestedPair(Member("c"), Member("d"), RequestType.SAME_GROUP),
+            RequestedPair(Member("e"), Member("f"), RequestType.BLOCK),
+            RequestedPair(Member("e"), Member("g"), RequestType.BLOCK),
+            RequestedPair(Member("g"), Member("h"), RequestType.BLOCK)
         ))
 
         every { csvDriver.readCells("input/group-request.csv") } returns listOf(listOf("a", "b", "c"), listOf("c", "d"))
+        every { csvDriver.readCells("input/block-request.csv") } returns listOf(listOf("e", "f", "g"), listOf("g", "h"))
 
         target.getRequest() shouldEqual expected
 
         verify { csvDriver.readCells("input/group-request.csv") }
+        verify { csvDriver.readCells("input/block-request.csv") }
     }
 }
