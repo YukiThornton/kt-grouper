@@ -18,11 +18,11 @@ class GroupTest {
             Pair(Member("b"), Member("c"))
         )
 
-        every { members.allPairCombinations() } returns expected
+        every { members.allSortedPairCombinations() } returns expected
 
-        target.allPairCombinations() shouldEqual expected
+        target.allSortedPairCombinations() shouldEqual expected
 
-        verify { members.allPairCombinations() }
+        verify { members.allSortedPairCombinations() }
     }
 
 }

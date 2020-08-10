@@ -11,7 +11,7 @@ data class Members(override val list: List<Member>): FCC<Member> {
         return list.chunked(maxGroupSize.value).map(::Members)
     }
 
-    fun allPairCombinations(): Set<PairedMembers> {
+    fun allSortedPairCombinations(): Set<PairedMembers> {
         return toSet().combinations(2).map{ it.toSortedPair() }.toSet()
     }
 

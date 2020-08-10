@@ -12,29 +12,9 @@ class HistoryTest {
             Group(Members(listOf(Member("e"), Member("c")))),
             Group(Members(listOf(Member("b"), Member("d"), Member("e"))))
         ))
-        val lots = Lots(listOf(
-            Lot(listOf(
-                Group(Members(listOf(Member("a"), Member("b")))),
-                Group(Members(listOf(Member("c"), Member("d"), Member("e"))))
-            )),
-            Lot(listOf(
-                Group(Members(listOf(Member("a"), Member("c")))),
-                Group(Members(listOf(Member("b"), Member("d"), Member("e"))))
-            ))
-        ))
-
-        val expected = ScoredLots(listOf(
-            ScoredLot(listOf(
-                ScoredGroup(Group(Members(listOf(Member("a"), Member("b")))), Score(0)),
-                ScoredGroup(Group(Members(listOf(Member("c"), Member("d"), Member("e")))), Score(-140))
-            )),
-            ScoredLot(listOf(
-                ScoredGroup(Group(Members(listOf(Member("a"), Member("c")))), Score(-70)),
-                ScoredGroup(Group(Members(listOf(Member("b"), Member("d"), Member("e")))), Score(-210))
-            ))
-        ))
-
-        target.score(lots) shouldEqual expected
+        target.score(Group(Members(listOf(Member("a"), Member("b"))))) shouldEqual Score(0)
+        target.score(Group(Members(listOf(Member("a"), Member("b"), Member("c"))))) shouldEqual Score(-70)
+        target.score(Group(Members(listOf(Member("a"), Member("e"), Member("c"))))) shouldEqual Score(-140)
     }
 
     @Test

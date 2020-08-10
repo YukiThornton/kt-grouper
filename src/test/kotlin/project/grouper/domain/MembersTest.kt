@@ -14,7 +14,7 @@ class MembersTest {
             Pair(Member("b"), Member("c"))
         )
 
-        target.allPairCombinations() shouldEqual expected
+        target.allSortedPairCombinations() shouldEqual expected
     }
 
 }

@@ -23,7 +23,7 @@ class RandomLotUsecaseTest : Mocked() {
     private lateinit var lotPort: LotPort
 
     @Test
-    fun `generateRandomLot returns a randomly generated group lot`() {
+    fun `generate returns a randomly generated group lot`() {
         val requirement = mockk<Requirement>()
         val groupSize = mockk<MaxGroupSize>()
         val lot = mockk<Lot>()

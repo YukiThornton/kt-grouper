@@ -2,7 +2,7 @@ package project.grouper.domain
 
 import java.util.*
 
-data class History(private val groups: List<Group>) {
+data class History(private val groups: List<Group>): Evaluator {
 
     companion object {
         private const val HISTORICAL_DUPLICATE_SCORE = -70
@@ -12,18 +12,10 @@ data class History(private val groups: List<Group>) {
         groups.allPairCombinationsWithDuplicates()
     }
 
-    fun score(lots: Lots): ScoredLots {
-        return lots.map(::score).let(::ScoredLots)
-    }
-
-    fun score(lot: Lot): ScoredLot {
-        return lot.map(::score).let(::ScoredLot)
-    }
-
-    fun score(group: Group): ScoredGroup {
-        val pairs = group.allPairCombinations()
+    override fun score(group: Group): Score {
+        val pairs = group.allSortedPairCombinations()
         val pairedCountTotal = pairs.map { countPairedTimes(it) }.sum()
-        return ScoredGroup(group, Score(pairedCountTotal * HISTORICAL_DUPLICATE_SCORE))
+        return Score(pairedCountTotal * HISTORICAL_DUPLICATE_SCORE)
     }
 
     fun countPairedTimes(targetPair: PairedMembers): Int {
@@ -31,7 +23,7 @@ data class History(private val groups: List<Group>) {
     }
 
     private fun List<Group>.allPairCombinationsWithDuplicates(): List<PairedMembers> {
-        return map { it.allPairCombinations().toList() }.flatten()
+        return map { it.allSortedPairCombinations().toList() }.flatten()
     }
 
 
