@@ -8,21 +8,21 @@ import org.junit.jupiter.api.Test
 
 class GroupTest {
     @Test
-    fun `allPairCombinations creates all possible pairs`() {
+    fun `uniquePairCombinations creates all possible pairs`() {
         val members = mockk<Members>()
         val target = Group(members)
 
         val expected = setOf(
-            Pair(Member("a"), Member("b")),
-            Pair(Member("a"), Member("c")),
-            Pair(Member("b"), Member("c"))
+            PairedMembers(Member("a"), Member("b")),
+            PairedMembers(Member("a"), Member("c")),
+            PairedMembers(Member("b"), Member("c"))
         )
 
-        every { members.allSortedPairCombinations() } returns expected
+        every { members.uniquePairCombinations() } returns expected
 
-        target.allSortedPairCombinations() shouldEqual expected
+        target.uniquePairCombinations() shouldEqual expected
 
-        verify { members.allSortedPairCombinations() }
+        verify { members.uniquePairCombinations() }
     }
 
 }

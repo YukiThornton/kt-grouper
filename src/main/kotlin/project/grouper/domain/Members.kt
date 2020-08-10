@@ -3,6 +3,9 @@ package project.grouper.domain
 import com.marcinmoskala.math.combinations
 
 data class Members(override val list: List<Member>): FCC<Member> {
+    private val uniqueCombinations: Set<PairedMembers> by lazy {
+        toSet().combinations(2).map{ PairedMembers(it.first(), it.last()) }.toSet()
+    }
     fun shuffled(): Members {
         return list.shuffled().let(::Members)
     }
@@ -11,13 +14,7 @@ data class Members(override val list: List<Member>): FCC<Member> {
         return list.chunked(maxGroupSize.value).map(::Members)
     }
 
-    fun allSortedPairCombinations(): Set<PairedMembers> {
-        return toSet().combinations(2).map{ it.toSortedPair() }.toSet()
-    }
-
-    private fun Set<Member>.toSortedPair(): PairedMembers {
-        this.toList().sorted().let {
-            return Pair(it.first(), it.last())
-        }
+    fun uniquePairCombinations(): Set<PairedMembers> {
+        return uniqueCombinations
     }
 }

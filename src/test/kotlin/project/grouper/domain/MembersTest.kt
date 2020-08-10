@@ -5,16 +5,16 @@ import org.junit.jupiter.api.Test
 
 class MembersTest {
     @Test
-    fun `allPairCombinations creates all possible pairs`() {
+    fun `uniquePairCombinations creates all possible pairs`() {
         val target = Members(listOf(Member("a"), Member("b"), Member("c")))
 
         val expected = setOf(
-            Pair(Member("a"), Member("b")),
-            Pair(Member("a"), Member("c")),
-            Pair(Member("b"), Member("c"))
+            PairedMembers(Member("a"), Member("b")),
+            PairedMembers(Member("a"), Member("c")),
+            PairedMembers(Member("b"), Member("c"))
         )
 
-        target.allSortedPairCombinations() shouldEqual expected
+        target.uniquePairCombinations() shouldEqual expected
     }
 
 }
