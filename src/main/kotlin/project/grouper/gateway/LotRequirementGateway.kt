@@ -3,13 +3,13 @@ package project.grouper.gateway
 import project.grouper.domain.GroupCount
 import project.grouper.domain.Member
 import project.grouper.domain.Members
-import project.grouper.domain.Requirement
+import project.grouper.domain.LotRequirement
 import project.grouper.driver.CsvDriver
-import project.grouper.port.RequirementPort
+import project.grouper.port.LotRequirementPort
 
-class RequirementGateway(private val csvDriver: CsvDriver) : RequirementPort {
-    override fun getRequirement(): Requirement {
-        return Requirement(loadGroupCount(), loadMembers())
+class LotRequirementGateway(private val csvDriver: CsvDriver) : LotRequirementPort {
+    override fun getRequirement(): LotRequirement {
+        return LotRequirement.of(loadGroupCount(), loadMembers())
     }
 
     private fun loadGroupCount(): GroupCount {

@@ -6,39 +6,33 @@ import io.mockk.impl.annotations.MockK
 import org.junit.jupiter.api.Test
 import project.grouper.Mocked
 import project.grouper.domain.Lot
-import project.grouper.domain.LotGenerator
-import project.grouper.domain.MaxGroupSize
-import project.grouper.domain.Requirement
+import project.grouper.domain.LotRequirement
 import project.grouper.port.LotPort
-import project.grouper.port.RequirementPort
+import project.grouper.port.LotRequirementPort
 
 class RandomLotUsecaseTest : Mocked() {
     @InjectMockKs
     private lateinit var target: RandomLotUsecase
 
     @MockK
-    private lateinit var requirementPort: RequirementPort
+    private lateinit var lotRequirementPort: LotRequirementPort
 
     @MockK
     private lateinit var lotPort: LotPort
 
     @Test
-    fun `generate returns a randomly generated group lot`() {
-        val requirement = mockk<Requirement>()
-        val groupSize = mockk<MaxGroupSize>()
+    fun `generates a group lot randomly and saves it`() {
+        val requirement = mockk<LotRequirement>()
         val lot = mockk<Lot>()
 
-        mockkObject(LotGenerator.Companion)
-        every { requirementPort.getRequirement() } returns requirement
-        every { requirement.maxGroupSize() } returns groupSize
-        every { LotGenerator.generateRandomLot(groupSize, requirement.members) } returns lot
+        every { lotRequirementPort.getRequirement() } returns requirement
+        every { requirement.generateRandomLot() } returns lot
         every { lotPort.saveLot(lot) } just runs
 
-        target.generate()
+        target.generateAndSave()
 
-        verify { requirementPort.getRequirement() }
-        verify { requirement.maxGroupSize() }
-        verify { LotGenerator.generateRandomLot(groupSize, requirement.members) }
+        verify { lotRequirementPort.getRequirement() }
+        verify { requirement.generateRandomLot() }
         verify { lotPort.saveLot(lot) }
     }
 }

@@ -1,14 +1,12 @@
 package project.grouper.usecase
 
-import project.grouper.domain.LotGenerator
 import project.grouper.port.LotPort
-import project.grouper.port.RequirementPort
+import project.grouper.port.LotRequirementPort
 
-class RandomLotUsecase(private val requirementPort: RequirementPort, private val lotPort: LotPort) {
+class RandomLotUsecase(private val lotRequirementPort: LotRequirementPort, private val lotPort: LotPort) {
 
-    fun generate() {
-        val requirement = requirementPort.getRequirement()
-        val lot = LotGenerator.generateRandomLot(requirement.maxGroupSize(), requirement.members)
+    fun generateAndSave() {
+        val lot = lotRequirementPort.getRequirement().generateRandomLot()
         lotPort.saveLot(lot)
     }
 }
