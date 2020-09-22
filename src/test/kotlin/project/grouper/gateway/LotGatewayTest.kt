@@ -46,11 +46,11 @@ class LotGatewayTest: Mocked() {
         val filePath = "output/fileName"
 
         every { targetSpy.generateUniqueLotFileName() } returns fileName
-        every { csvDriver.writeCells(filePath, listOf(listOf("a", "b"), listOf("c", "d"))) } just runs
+        every { csvDriver.writeCells(filePath, listOf(listOf("Score=30", "a", "b"), listOf("Score=10", "c", "d"))) } just runs
 
         targetSpy.saveScoredLot(scoredLot)
 
         verify { targetSpy.generateUniqueLotFileName() }
-        verify { csvDriver.writeCells(filePath, listOf(listOf("a", "b"), listOf("c", "d"))) }
+        verify { csvDriver.writeCells(filePath, listOf(listOf("Score=30", "a", "b"), listOf("Score=10", "c", "d"))) }
     }
 }

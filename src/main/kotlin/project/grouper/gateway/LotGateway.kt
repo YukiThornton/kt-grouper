@@ -22,7 +22,11 @@ class LotGateway(private val csvDriver: CsvDriver): LotPort {
     }
 
     private fun ScoredLot.toCsvRows(): List<List<String>> {
-        return map { it.group.toCsvRow() }
+        return map { listOf(it.score.toCsvCell()) + it.group.toCsvRow() }
+    }
+
+    private fun Score.toCsvCell(): String {
+        return "Score=${this.value}"
     }
 
     private fun Group.toCsvRow(): List<String> {
