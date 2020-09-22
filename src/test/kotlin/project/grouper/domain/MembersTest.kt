@@ -9,9 +9,9 @@ class MembersTest {
         val target = Members(listOf(Member("a"), Member("b"), Member("c")))
 
         val expected = setOf(
-            PairedMembers(Member("a"), Member("b")),
-            PairedMembers(Member("a"), Member("c")),
-            PairedMembers(Member("b"), Member("c"))
+            MemberPair(Member("a"), Member("b")),
+            MemberPair(Member("a"), Member("c")),
+            MemberPair(Member("b"), Member("c"))
         )
 
         target.allPossiblePairings() shouldEqual expected

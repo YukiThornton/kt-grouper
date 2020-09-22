@@ -1,14 +1,14 @@
 package project.grouper.domain
 
-data class PairedMembers(val first: Member, val second: Member) {
+data class MemberPair(val first: Member, val second: Member) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
-        return isSame(other as PairedMembers)
+        return isSame(other as MemberPair)
     }
 
-    private fun isSame(other: PairedMembers): Boolean {
+    private fun isSame(other: MemberPair): Boolean {
         if (first == other.first && second == other.second) return true
         if (first == other.second && second == other.first) return true
         return false

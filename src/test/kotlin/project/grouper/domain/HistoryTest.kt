@@ -25,8 +25,8 @@ class HistoryTest {
             Group(Members(listOf(Member("b"), Member("d"), Member("c"))))
         ))
 
-        target.countGroupedTimesInHistory(PairedMembers(Member("a"), Member("b"))) shouldEqual 0
-        target.countGroupedTimesInHistory(PairedMembers(Member("b"), Member("c"))) shouldEqual 1
-        target.countGroupedTimesInHistory(PairedMembers(Member("c"), Member("d"))) shouldEqual 2
+        target.countGroupedTimesInHistory(MemberPair(Member("a"), Member("b"))) shouldEqual 0
+        target.countGroupedTimesInHistory(MemberPair(Member("b"), Member("c"))) shouldEqual 1
+        target.countGroupedTimesInHistory(MemberPair(Member("c"), Member("d"))) shouldEqual 2
     }
 }

@@ -8,34 +8,34 @@ import org.amshove.kluent.shouldEqual
 import org.junit.jupiter.api.Test
 import project.grouper.Mocked
 import project.grouper.domain.Member
-import project.grouper.domain.Request
-import project.grouper.domain.RequestType
-import project.grouper.domain.RequestedPair
+import project.grouper.domain.PairingRequests
+import project.grouper.domain.PairingRequestType
+import project.grouper.domain.PairingRequest
 
 import project.grouper.driver.CsvDriver
 
 class RequestGatewayTest: Mocked() {
     @InjectMockKs
-    private lateinit var target: RequestGateway
+    private lateinit var target: PairingRequestGateway
 
     @MockK
     private lateinit var csvDriver: CsvDriver
 
     @Test
-    fun `getRequest returns request from csv content`() {
-        val expected = Request(listOf(
-            RequestedPair(Member("a"), Member("b"), RequestType.SAME_GROUP),
-            RequestedPair(Member("a"), Member("c"), RequestType.SAME_GROUP),
-            RequestedPair(Member("c"), Member("d"), RequestType.SAME_GROUP),
-            RequestedPair(Member("e"), Member("f"), RequestType.BLOCK),
-            RequestedPair(Member("e"), Member("g"), RequestType.BLOCK),
-            RequestedPair(Member("g"), Member("h"), RequestType.BLOCK)
+    fun `getPairingRequests returns request from csv content`() {
+        val expected = PairingRequests(listOf(
+            PairingRequest(Member("a"), Member("b"), PairingRequestType.SAME_GROUP),
+            PairingRequest(Member("a"), Member("c"), PairingRequestType.SAME_GROUP),
+            PairingRequest(Member("c"), Member("d"), PairingRequestType.SAME_GROUP),
+            PairingRequest(Member("e"), Member("f"), PairingRequestType.BLOCK),
+            PairingRequest(Member("e"), Member("g"), PairingRequestType.BLOCK),
+            PairingRequest(Member("g"), Member("h"), PairingRequestType.BLOCK)
         ))
 
         every { csvDriver.readCells("input/group-request.csv") } returns listOf(listOf("a", "b", "c"), listOf("c", "d"))
         every { csvDriver.readCells("input/block-request.csv") } returns listOf(listOf("e", "f", "g"), listOf("g", "h"))
 
-        target.getRequest() shouldEqual expected
+        target.getPairingRequests() shouldEqual expected
 
         verify { csvDriver.readCells("input/group-request.csv") }
         verify { csvDriver.readCells("input/block-request.csv") }

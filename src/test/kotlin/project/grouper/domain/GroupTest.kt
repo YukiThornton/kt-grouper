@@ -13,9 +13,9 @@ class GroupTest {
         val target = Group(members)
 
         val expected = setOf(
-            PairedMembers(Member("a"), Member("b")),
-            PairedMembers(Member("a"), Member("c")),
-            PairedMembers(Member("b"), Member("c"))
+            MemberPair(Member("a"), Member("b")),
+            MemberPair(Member("a"), Member("c")),
+            MemberPair(Member("b"), Member("c"))
         )
 
         every { members.allPossiblePairings() } returns expected

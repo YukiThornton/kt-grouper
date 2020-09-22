@@ -1,7 +1,7 @@
 package project.grouper.domain
 
 data class Group(val members: Members) {
-    fun allPossiblePairings(): Set<PairedMembers> {
+    fun allPossiblePairings(): Set<MemberPair> {
         return members.allPossiblePairings()
     }
 }
