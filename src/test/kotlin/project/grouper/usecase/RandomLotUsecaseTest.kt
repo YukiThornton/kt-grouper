@@ -25,13 +25,13 @@ class RandomLotUsecaseTest : Mocked() {
         val requirement = mockk<LotRequirement>()
         val lot = mockk<Lot>()
 
-        every { lotRequirementPort.getRequirement() } returns requirement
+        every { lotRequirementPort.getLotRequirement() } returns requirement
         every { requirement.generateRandomLot() } returns lot
         every { lotPort.saveLot(lot) } just runs
 
         target.generateAndSave()
 
-        verify { lotRequirementPort.getRequirement() }
+        verify { lotRequirementPort.getLotRequirement() }
         verify { requirement.generateRandomLot() }
         verify { lotPort.saveLot(lot) }
     }

@@ -8,8 +8,8 @@ data class Request(val requestedPairs: List<RequestedPair>) : Evaluator {
             { pair -> pair.requestType })
     }
 
-    override fun score(group: Group): Score {
-        val matchedRequests = group.uniquePairCombinations()
+    override fun evaluate(group: Group): Score {
+        val matchedRequests = group.allPossiblePairings()
             .filter { groupedRequestedPairs.containsKey(it) }
             .flatMap { groupedRequestedPairs[it]!! }
         return if (matchedRequests.isEmpty()) {

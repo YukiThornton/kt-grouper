@@ -6,15 +6,15 @@ import org.junit.jupiter.api.Test
 class HistoryTest {
 
     @Test
-    fun `score calculates scores for each group in lots`() {
+    fun `evaluate calculates scores for each group in lots`() {
         val target = History(listOf(
             Group(Members(listOf(Member("a"), Member("c")))),
             Group(Members(listOf(Member("e"), Member("c")))),
             Group(Members(listOf(Member("b"), Member("d"), Member("e"))))
         ))
-        target.score(Group(Members(listOf(Member("a"), Member("b"))))) shouldEqual Score(0)
-        target.score(Group(Members(listOf(Member("a"), Member("b"), Member("c"))))) shouldEqual Score(-70)
-        target.score(Group(Members(listOf(Member("a"), Member("e"), Member("c"))))) shouldEqual Score(-140)
+        target.evaluate(Group(Members(listOf(Member("a"), Member("b"))))) shouldEqual Score(0)
+        target.evaluate(Group(Members(listOf(Member("a"), Member("b"), Member("c"))))) shouldEqual Score(-70)
+        target.evaluate(Group(Members(listOf(Member("a"), Member("e"), Member("c"))))) shouldEqual Score(-140)
     }
 
     @Test
@@ -25,8 +25,8 @@ class HistoryTest {
             Group(Members(listOf(Member("b"), Member("d"), Member("c"))))
         ))
 
-        target.countPairedTimes(PairedMembers(Member("a"), Member("b"))) shouldEqual 0
-        target.countPairedTimes(PairedMembers(Member("b"), Member("c"))) shouldEqual 1
-        target.countPairedTimes(PairedMembers(Member("c"), Member("d"))) shouldEqual 2
+        target.countGroupedTimesInHistory(PairedMembers(Member("a"), Member("b"))) shouldEqual 0
+        target.countGroupedTimesInHistory(PairedMembers(Member("b"), Member("c"))) shouldEqual 1
+        target.countGroupedTimesInHistory(PairedMembers(Member("c"), Member("d"))) shouldEqual 2
     }
 }

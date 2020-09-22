@@ -14,10 +14,10 @@ class ScoredLotUsecase(
 ) {
 
     fun generateLotsAndSaveHighest() {
-        val lots = lotRequirementPort.getRequirement().generateRandomLots(100)
+        val lots = lotRequirementPort.getLotRequirement().generateRandomLots(100)
         val request = requestPort.getRequest()
         val history = historyPort.getHistory()
-        val highestLot = Evaluator.with(request, history).addScore(lots).highest()
+        val highestLot = Evaluator.with(request, history).attachScore(lots).highest()
         lotPort.saveScoredLot(highestLot)
     }
 }

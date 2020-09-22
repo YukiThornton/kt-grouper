@@ -38,23 +38,23 @@ class ScoredLotUsecaseTest: Mocked() {
         val scoredLot = mockk<ScoredLot>()
 
         mockkObject(Evaluator.Companion)
-        every { lotRequirementPort.getRequirement() } returns requirement
+        every { lotRequirementPort.getLotRequirement() } returns requirement
         every { requirement.generateRandomLots(100) } returns lots
         every { requestPort.getRequest() } returns request
         every { historyPort.getHistory() } returns history
         every { Evaluator.with(request, history) } returns evaluator
-        every { evaluator.addScore(lots) } returns scoredLots
+        every { evaluator.attachScore(lots) } returns scoredLots
         every { scoredLots.highest() } returns scoredLot
         every { lotPort.saveScoredLot(scoredLot) } just runs
 
         target.generateLotsAndSaveHighest()
 
-        verify { lotRequirementPort.getRequirement() }
+        verify { lotRequirementPort.getLotRequirement() }
         verify { requirement.generateRandomLots(100) }
         verify { requestPort.getRequest() }
         verify { historyPort.getHistory() }
         verify { Evaluator.with(request, history) }
-        verify { evaluator.addScore(lots) }
+        verify { evaluator.attachScore(lots) }
         verify { scoredLots.highest() }
         verify { lotPort.saveScoredLot(scoredLot) }
     }

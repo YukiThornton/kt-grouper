@@ -16,9 +16,6 @@ data class LotRequirement private constructor(val groupCount: GroupCount, val me
     }
 
     fun generateRandomLot(): Lot {
-        if (groupCount.count == 1) return Lot(listOf(Group(members)))
-        if (groupCount.count == members.size()) return Lot(members.shuffled().map { Group(Members(listOf(it))) })
-
         val shuffled = members.shuffled()
         return groupDividingBoundaryIndexPairs().map{ (start, end) -> Group(Members(shuffled.subList(start, end)))}.let(::Lot)
     }

@@ -6,22 +6,19 @@ data class History(private val groups: List<Group>): Evaluator {
         private const val HISTORICAL_DUPLICATE_SCORE = -70
     }
 
-    private val pairedTimesCountMap : Map<PairedMembers, Int> by lazy {
-        groups.allPairCombinationsWithDuplicates().groupingBy { it }.eachCount()
+    private val groupedTimesCountForEachPair : Map<PairedMembers, Int> by lazy {
+        val allGroupedPairsInHistory = groups.map { it.allPossiblePairings().toList() }.flatten()
+        allGroupedPairsInHistory.groupingBy { it }.eachCount()
     }
 
-    override fun score(group: Group): Score {
-        val pairs = group.uniquePairCombinations()
-        val pairedCountTotal = pairs.map { countPairedTimes(it) }.sum()
-        return Score(pairedCountTotal * HISTORICAL_DUPLICATE_SCORE)
+    override fun evaluate(group: Group): Score {
+        val pairsWithinGroup = group.allPossiblePairings()
+        val groupedCountTotal = pairsWithinGroup.map { pair -> countGroupedTimesInHistory(pair) }.sum()
+        return Score(groupedCountTotal * HISTORICAL_DUPLICATE_SCORE)
     }
 
-    fun countPairedTimes(targetPair: PairedMembers): Int {
-        return pairedTimesCountMap.getOrElse(targetPair, { 0 })
-    }
-
-    private fun List<Group>.allPairCombinationsWithDuplicates(): List<PairedMembers> {
-        return map { it.uniquePairCombinations().toList() }.flatten()
+    fun countGroupedTimesInHistory(targetPair: PairedMembers): Int {
+        return groupedTimesCountForEachPair.getOrElse(targetPair, { 0 })
     }
 
 

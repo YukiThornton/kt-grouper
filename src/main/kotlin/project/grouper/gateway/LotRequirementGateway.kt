@@ -8,7 +8,7 @@ import project.grouper.driver.CsvDriver
 import project.grouper.port.LotRequirementPort
 
 class LotRequirementGateway(private val csvDriver: CsvDriver) : LotRequirementPort {
-    override fun getRequirement(): LotRequirement {
+    override fun getLotRequirement(): LotRequirement {
         return LotRequirement.of(loadGroupCount(), loadMembers())
     }
 
